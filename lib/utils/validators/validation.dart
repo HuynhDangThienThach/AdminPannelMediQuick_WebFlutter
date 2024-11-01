@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 class TValidator {
   // Empty Text Validation
   static String? validateEmptyText(String? fieldName, String? value){
@@ -66,6 +68,12 @@ class TValidator {
     }
 
     return null;
+  }
+
+  static String generateRandomSku(int length) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    Random random = Random();
+    return List.generate(length, (index) => chars[random.nextInt(chars.length)]).join();
   }
 
 // Add more custom validators as needed for your specific requirements.

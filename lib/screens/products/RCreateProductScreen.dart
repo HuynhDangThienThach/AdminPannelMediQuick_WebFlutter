@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../constants.dart';
-
+import '../../controllers/brandController.dart';
+import '../../controllers/categoryController.dart';
+import '../../controllers/product_controller.dart';
+import '../../models/brand_model.dart';
 class RCreateProductScreen extends StatefulWidget {
   const RCreateProductScreen({super.key});
 
@@ -10,10 +14,9 @@ class RCreateProductScreen extends StatefulWidget {
 }
 
 class _RCreateProductScreenState extends State<RCreateProductScreen> {
-  String? selectedBrand;
-  String? selectedProductType;
-  String displayOption = 'Hiển thị';
-
+  final controller = Get.put(ProductController());
+  final controllerBrand = Get.put(BrandController());
+  final controllerCategory = Get.put(CategoryController());
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -33,10 +36,14 @@ class _RCreateProductScreenState extends State<RCreateProductScreen> {
               children: [
                 Text(
                   'Hình thu nhỏ (Thumbnail)',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
                 SizedBox(height: 16.0),
                 TextFormField(
+                  controller: controller.hinhdh,
                   decoration: InputDecoration(
                     labelText: 'Nhập đường link của ảnh',
                     labelStyle: TextStyle(color: Colors.white),
@@ -63,7 +70,10 @@ class _RCreateProductScreenState extends State<RCreateProductScreen> {
               children: [
                 Text(
                   'Ảnh của sản phẩm',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
                 SizedBox(height: 16.0),
                 ListView.builder(
@@ -73,6 +83,7 @@ class _RCreateProductScreenState extends State<RCreateProductScreen> {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
                       child: TextFormField(
+                        controller: controller.imageControllers[index],
                         decoration: InputDecoration(
                           labelText: 'Nhập đường link ảnh ${index + 1}',
                           labelStyle: TextStyle(color: Colors.white),
@@ -102,31 +113,37 @@ class _RCreateProductScreenState extends State<RCreateProductScreen> {
               children: [
                 Text(
                   'Thương hiệu',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
                 SizedBox(height: 16.0),
-                DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: secondaryColor,
-                    border: OutlineInputBorder(),
-                  ),
-                  value: selectedBrand,
-                  hint: Text('Chọn thương hiệu', style: TextStyle(color: Colors.white, fontSize: 15)),
-                  dropdownColor: secondaryColor,
-                  style: TextStyle(color: Colors.white),
-                  items: ['Brand A', 'Brand B', 'Brand C']
-                      .map((brand) => DropdownMenuItem(
-                    value: brand,
-                    child: Text(brand),
-                  ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedBrand = value;
-                    });
-                  },
-                ),
+                Obx(() {
+                  return DropdownButtonFormField<BrandModel>(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: secondaryColor,
+                      border: OutlineInputBorder(),
+                    ),
+                    value: controllerBrand.selectedBrand,
+                    hint: Text(
+                      'Chọn thương hiệu',
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                    dropdownColor: secondaryColor,
+                    style: TextStyle(color: Colors.white),
+                    items: controllerBrand.brands.map((brand) {
+                      return DropdownMenuItem(
+                        value: brand,
+                        child: Text(brand.name),
+                      );
+                    }).toList(),
+                    onChanged: (brand) {
+                      controllerBrand.setSelectedBrand(brand!);
+                    },
+                  );
+                }),
               ],
             ),
           ),
@@ -144,30 +161,38 @@ class _RCreateProductScreenState extends State<RCreateProductScreen> {
               children: [
                 Text(
                   'Loại sản phẩm',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
                 SizedBox(height: 16.0),
-                DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: secondaryColor,
-                    border: OutlineInputBorder(),
+                Obx(
+                      () => DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: secondaryColor,
+                      border: OutlineInputBorder(),
+                    ),
+                    value: controllerCategory.selectedCategory?.id,
+                    hint: Text('Chọn loại sản phẩm',
+                        style:
+                        TextStyle(color: Colors.white, fontSize: 15)),
+                    dropdownColor: secondaryColor,
+                    style: TextStyle(color: Colors.white),
+                    items: controllerCategory.categories.map((category) {
+                      return DropdownMenuItem(
+                        value: category.id,
+                        child: Text(category.name,
+                            style: TextStyle(color: Colors.white)),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      final selectedCat = controllerCategory.categories
+                          .firstWhere((cat) => cat.id == value);
+                      controllerCategory.setSelectedCategory(selectedCat);
+                    },
                   ),
-                  value: selectedProductType,
-                  hint: Text('Chọn loại sản phẩm', style: TextStyle(color: Colors.white, fontSize: 15)),
-                  dropdownColor: secondaryColor,
-                  style: TextStyle(color: Colors.white),
-                  items: ['Type A', 'Type B', 'Type C']
-                      .map((type) => DropdownMenuItem(
-                    value: type,
-                    child: Text(type),
-                  ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedProductType = value;
-                    });
-                  },
                 ),
               ],
             ),
@@ -186,27 +211,33 @@ class _RCreateProductScreenState extends State<RCreateProductScreen> {
               children: [
                 Text(
                   'Tùy chọn hiển thị',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
                 Row(
                   children: [
                     Radio<String>(
                       value: 'Hiển thị',
-                      groupValue: displayOption,
+                      groupValue: controller.displayOption,
                       onChanged: (value) {
                         setState(() {
-                          displayOption = value!;
+                          controller.displayOption = value!;
+                          controller.tuyChonHienThi.value = true;
                         });
                       },
                       activeColor: Colors.blue,
                     ),
-                    Text('Hiển thị', style: TextStyle(color: Colors.white)),
+                    Text('Hiển thị',
+                        style: TextStyle(color: Colors.white)),
                     Radio<String>(
                       value: 'Ẩn',
-                      groupValue: displayOption,
+                      groupValue: controller.displayOption,
                       onChanged: (value) {
                         setState(() {
-                          displayOption = value!;
+                          controller.displayOption = value!;
+                          controller.tuyChonHienThi.value = false;
                         });
                       },
                       activeColor: Colors.blue,
@@ -222,3 +253,4 @@ class _RCreateProductScreenState extends State<RCreateProductScreen> {
     );
   }
 }
+

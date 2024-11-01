@@ -28,6 +28,9 @@ class Routes{
   static const createCategory = '/createCategory';
   static const editCategory = '/editCategory';
 
+  static const profile = '/profile';
+
+
 
 
 }

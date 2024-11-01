@@ -4,6 +4,7 @@ import 'package:admin/screens/auth/login_screen.dart';
 import 'package:admin/screens/category/CategoryScreen.dart';
 import 'package:admin/screens/dashboard/dashboard_screen.dart';
 import 'package:admin/screens/main/main_screen.dart';
+import 'package:admin/screens/profile/profileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -192,6 +193,14 @@ class AppRoutes {
       name: Routes.editCategory,
       page: () => MainScreen(
         screen: EditCategoryScreen(),
+        scaffoldKey: GlobalKey<ScaffoldState>(),
+      ),
+      middlewares: [RouteMiddleware()],
+    ),
+    GetPage(
+      name: Routes.profile,
+      page: () => MainScreen(
+        screen: ProfileScreen(userId: '',),
         scaffoldKey: GlobalKey<ScaffoldState>(),
       ),
       middlewares: [RouteMiddleware()],

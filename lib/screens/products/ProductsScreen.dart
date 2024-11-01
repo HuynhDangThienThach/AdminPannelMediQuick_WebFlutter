@@ -1,23 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../constants.dart';
-import '../../models/product.dart';
+import '../../controllers/product_controller.dart';
 import '../../routes/routes.dart';
 import '../dashboard/components/header.dart';
 import '../dashboard/components/recent_files.dart';
 
-class ProductsScreen extends StatelessWidget {
+class ProductsScreen extends StatefulWidget { // Thay đổi thành StatefulWidget
   const ProductsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Dữ liệu mẫu
-    final List<Product> products = [
-      Product(id: "1", stock: "20", sold: "5", brand: "Brand A", price: "\$10", date: "2024-01-01"),
-      Product(id: "2", stock: "15", sold: "3", brand: "Brand B", price: "\$15", date: "2024-01-02"),
-      Product(id: "3", stock: "30", sold: "8", brand: "Brand C", price: "\$20", date: "2024-01-03"),
-    ];
+  _ProductsScreenState createState() => _ProductsScreenState();
+}
 
+class _ProductsScreenState extends State<ProductsScreen> {
+  final productController = Get.put(ProductController());
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(() {
+      setState(() {
+        _searchQuery = _searchController.text;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
         primary: false,
@@ -32,83 +44,30 @@ class ProductsScreen extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: [
-                      RecentFiles(
+
+                      SizedBox(height: defaultPadding),
+                      Obx(() => RecentFiles(
                         title: "Danh sách sản phẩm",
                         textButton: "Tạo sản phẩm",
                         routes: Routes.createProducts,
                         onPressed: (routes) {
                           Get.toNamed(routes);
                         },
-                        data: products.map((product) {
-                          return {
-                            'id': product.id,
-                            'stock': product.stock,
-                            'sold': product.sold,
-                            'brand': product.brand,
-                            'price': product.price,
-                            'date': product.date,
-                          };
-                        }).toList(),
-                        columns: ['id', 'stock', 'sold', 'brand', 'price', 'date']
-                      ),
+                        // Truyền danh sách sản phẩm đã được lọc
+                        data: productController.products
+                            .where((product) => product.title.toLowerCase().contains(_searchQuery.toLowerCase())) // Lọc danh sách sản phẩm theo _searchQuery
+                            .map((product) => product.toMap())
+                            .toList(),
+                        columns: ['Tên sản phẩm', 'Số lượng', 'Thương hiệu', "Giá bán", "Giảm giá", "Ngày nhập"],
+                      )),
                     ],
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-
-class ProductDataSource extends DataTableSource {
-  final List<Product> products;
-  int _selectedCount = 0;
-
-  ProductDataSource(this.products);
-
-  @override
-  DataRow? getRow(int index) {
-    if (index >= products.length) return null;
-    final product = products[index];
-
-    return DataRow.byIndex(
-      index: index,
-      cells: [
-        DataCell(Text(product.id)),
-        DataCell(Text(product.stock)),
-        DataCell(Text(product.sold)),
-        DataCell(Text(product.brand)),
-        DataCell(Text(product.price)),
-        DataCell(Text(product.date)),
-        DataCell(Row(
-          children: [
-            IconButton(
-              icon: Icon(Icons.edit, color: Colors.blue),
-              onPressed: () {
-                print('Chỉnh sửa sản phẩm ${product.id}');
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.delete, color: Colors.red),
-              onPressed: () {
-                print('Xóa sản phẩm ${product.id}');
-              },
-            ),
-          ],
-        )),
-      ],
-    );
-  }
-
-  @override
-  bool get isRowCountApproximate => false;
-  @override
-  int get rowCount => products.length;
-  @override
-  int get selectedRowCount => _selectedCount;
-}
-

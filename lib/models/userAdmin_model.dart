@@ -3,8 +3,10 @@ class UserAdmin {
   final String email;
   final String displayName;
   final String roles;
+  final String image;
 
   UserAdmin({
+    required this.image,
     required this.id,
     required this.email,
     required this.displayName,
@@ -18,6 +20,7 @@ class UserAdmin {
       email: data['Email'] ?? '',
       displayName: data['DisplayName'] ?? '',
       roles: data['Roles'] ?? '',
+      image: data['Image'] ?? '',
     );
   }
 
@@ -27,6 +30,7 @@ class UserAdmin {
       'Email': email,
       'DisplayName': displayName,
       'Roles': roles,
+      'Image': image
     };
   }
 }

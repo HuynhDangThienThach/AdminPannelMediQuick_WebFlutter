@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../constants.dart';
+import '../../controllers/product_controller.dart';
 import '../dashboard/components/header.dart';
 import 'LCreateProductScreen.dart';
-import 'RCreateProductscreen.dart';
 
 class CreateProductsScreen extends StatefulWidget {
   @override
@@ -10,17 +11,9 @@ class CreateProductsScreen extends StatefulWidget {
 }
 
 class _CreateProductsScreenState extends State<CreateProductsScreen> {
-  void _onFloatingButtonPressed() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("Bạn đã tạo sản phẩm"),
-        duration: Duration(seconds: 2),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ProductController());
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -29,18 +22,12 @@ class _CreateProductsScreenState extends State<CreateProductsScreen> {
           child: Column(
             children: [
               Header(title: "Tạo sản phẩm", isButton: true),
-              Row(
-                children: [
-                  LCreateProductScreen(),
-                  SizedBox(width: 20),
-                  RCreateProductScreen(),
-                ],
-              ),
+              LCreateProductScreen(),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: _onFloatingButtonPressed,
+          onPressed: controller.createProduct,
           tooltip: 'Đăng sản phẩm',
           child: Icon(Icons.check),
           backgroundColor: Colors.blueAccent,
