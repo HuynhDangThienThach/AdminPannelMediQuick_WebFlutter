@@ -6,7 +6,7 @@ import '../../routes/routes.dart';
 import '../dashboard/components/header.dart';
 import '../dashboard/components/recent_files.dart';
 
-class ProductsScreen extends StatefulWidget { // Thay đổi thành StatefulWidget
+class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
 
   @override
@@ -53,9 +53,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         onPressed: (routes) {
                           Get.toNamed(routes);
                         },
-                        // Truyền danh sách sản phẩm đã được lọc
                         data: productController.products
-                            .where((product) => product.title.toLowerCase().contains(_searchQuery.toLowerCase())) // Lọc danh sách sản phẩm theo _searchQuery
+                            .where((product) => product.title.toLowerCase().contains(_searchQuery.toLowerCase()))
                             .map((product) => product.toMap())
                             .toList(),
                         columns: ['Tên sản phẩm', 'Số lượng', 'Thương hiệu', "Giá bán", "Giảm giá", "Ngày nhập"],

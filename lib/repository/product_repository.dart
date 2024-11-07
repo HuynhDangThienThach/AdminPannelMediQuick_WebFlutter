@@ -65,5 +65,14 @@ class ProductRepository extends GetxController {
     }
   }
 
+  Future<void> deleteProduct(String productId) async {
+    try {
+      // Giả sử bạn có một phương thức trong Firestore để xóa sản phẩm
+      await FirebaseFirestore.instance.collection('Products').doc(productId).delete();
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      print('Error deleting product: $e');
+    }
+  }
 
 }
