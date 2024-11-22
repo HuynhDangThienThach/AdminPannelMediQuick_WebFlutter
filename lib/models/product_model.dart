@@ -56,7 +56,7 @@ class ProductModel{
       'SalePrice': salePrice,
       'IsFeatured': isFeatured,
       'CategoryId': categoryId,
-      'Brand': brand!.toJson(),
+      'Brand': brand!.toMap(),
       'Description': description,
       'ProductType': productType,
       'Date': date?.toIso8601String(),

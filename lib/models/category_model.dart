@@ -21,10 +21,20 @@ class CategoryModel{
   /// Convert this model to Json and store data in Fb
   Map<String, dynamic> toJson(){
     return{
-      'Name' : name,
-      'Image' : image,
-      'ParentId' : parentId,
-      'IsFeatured' : isFeatured,
+      'Id': id,
+      'Tên danh mục': name,
+      'Ảnh': image,
+      'ParentId': parentId,
+      'Kích hoạt': isFeatured,
+    };
+  }
+
+  Map<String, dynamic> toMap(){
+    return{
+      'Name': name,
+      'Image': image,
+      'ParentId': parentId,
+      'IsFeatured': isFeatured,
     };
   }
 
@@ -32,8 +42,6 @@ class CategoryModel{
   factory CategoryModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document){
     if (document.data() != null){
       final data = document.data()!;
-
-      // Map Json Record to the Model
       return CategoryModel(
           id: document.id,
           name: data['Name'] ?? '',

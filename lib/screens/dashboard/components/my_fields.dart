@@ -1,6 +1,8 @@
-import 'package:admin/models/my_files.dart';
+import 'package:admin/controllers/customer_controller.dart';
 import 'package:admin/responsive.dart';
+import 'package:admin/utils/validators/loaders.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../constants.dart';
 import 'file_info_card.dart';
@@ -30,7 +32,9 @@ class MyFiles extends StatelessWidget {
                       defaultPadding / (Responsive.isMobile(context) ? 2 : 1),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                TLoaders.warningSnackBar(title: "Xin lỗi", message:"Chức năng này chưa có!");
+              },
               icon: Icon(Icons.add),
               label: Text("Thêm mới"),
             ),
@@ -64,17 +68,31 @@ class FileInfoCardGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: demoMyFiles.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: defaultPadding,
-        mainAxisSpacing: defaultPadding,
-        childAspectRatio: childAspectRatio,
-      ),
-      itemBuilder: (context, index) => FileInfoCard(info: demoMyFiles[index]),
-    );
+    final controller = Get.find<CustomerController>();
+
+    return Obx(() {
+      if (controller.demoMyFiles.isEmpty) {
+        return Center(
+          child: Text(
+            "Không có dữ liệu hiển thị.",
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        );
+      }
+      return GridView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: controller.demoMyFiles.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
+          crossAxisSpacing: defaultPadding,
+          mainAxisSpacing: defaultPadding,
+          childAspectRatio: childAspectRatio,
+        ),
+        itemBuilder: (context, index) =>
+            FileInfoCard(info: controller.demoMyFiles[index]),
+      );
+    });
   }
 }
+

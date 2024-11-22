@@ -1,5 +1,5 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import '../utils/validators/enums.dart';
 import '../utils/validators/helper_functions.dart';
 import 'AddressModel.dart';
@@ -8,7 +8,7 @@ import 'cart_item_model.dart';
 class OrderModel{
   final String id;
   final String userId;
-  final OrderStatus status;
+  OrderStatus status;
   final double totalAmount;
   final DateTime orderDate;
   final String paymentMethod;
@@ -30,23 +30,69 @@ class OrderModel{
 
   String get formattedOrderDate => THelperFunctions.getFormattedDate(orderDate);
   String get formattedDeliveryDate => deliveryDate != null ? THelperFunctions.getFormattedDate(orderDate) :  '';
-  String get orderStatusText => status == OrderStatus.delivered
-      ? 'Delivered'
-      : status == OrderStatus.shipped
-        ? 'Shipment on the way'
-        : 'Processing';
+  String get orderStatusText {
+    switch (status) {
+      case OrderStatus.pending:
+        return 'Đang chờ xử lý';
+      case OrderStatus.processing:
+        return 'Đang xử lý';
+      case OrderStatus.prepare:
+        return 'Đang chuẩn bị';
+      case OrderStatus.shipped:
+        return 'Đang giao hàng';
+      case OrderStatus.delivered:
+        return 'Đã giao hàng';
+      case OrderStatus.cancel:
+        return 'Đã hủy';
+      default:
+        return 'Không xác định';
+    }
+  }
+
+  Color get orderStatusColor {
+    switch (status) {
+      case OrderStatus.pending:
+        return Colors.orange;
+      case OrderStatus.processing:
+        return Colors.blue;
+      case OrderStatus.prepare:
+        return Colors.amber;
+      case OrderStatus.shipped:
+        return Colors.lightBlue;
+      case OrderStatus.delivered:
+        return Colors.green;
+      case OrderStatus.cancel:
+        return Colors.red;
+      default:
+        return Colors.grey;
+    }
+  }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'userId': userId,
-      'status': status.toString(), // Enum to string
+      'status': status.toString(),
       'totalAmount': totalAmount,
       'orderDate': orderDate,
       'paymentMethod': paymentMethod,
-      'address': address?.toJson(), // Convert Address Model to map
+      'address': address?.toJson(),
       'deliveryDate': deliveryDate,
-      'items': items.map((item) => item.toJson()).toList(), // Convert CartItemModel to map
+      'items': items.map((item) => item.toJson()).toList(),
+    };
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'Id đơn hàng': id,
+      'Trạng thái': orderStatusText,
+      'Tổng tiền': totalAmount,
+      'Ngày': deliveryDate,
+      'Sản phẩm': items.length,
+      'userId': userId,
+      'orderDate': orderDate,
+      'paymentMethod': paymentMethod,
+      'address': address?.toJson(),
     };
   }
 

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../utils/exceptions/firebase_exceptions.dart';
 import '../../../utils/exceptions/platform_exceptions.dart';
-import '../models/brand_model.dart';
+import '../models/product_category_model.dart';
 import '../models/product_model.dart';
 
 class ProductRepository extends GetxController {
@@ -14,7 +14,7 @@ class ProductRepository extends GetxController {
   /// Get limited featured products
   Future<List<ProductModel>> getAllFeaturedProducts() async {
     try {
-      final snapshot = await _db.collection('Products').where('IsFeatured', isEqualTo: true).get();
+      final snapshot = await _db.collection('Products').get();
       return snapshot.docs.map((e) => ProductModel.fromSnapshot(e)).toList();
     } on FirebaseException catch (e) {
       throw TFirebaseException(e.code).message;
@@ -36,6 +36,20 @@ class ProductRepository extends GetxController {
       throw 'Something went wrong. Please try again';
     }
   }
+
+  Future<void> saveProductCategory(String productId, String categoryId) async {
+    try {
+      final productCategory = ProductCategoryModel(
+        productId: productId,
+        categoryId: categoryId,
+      );
+      await _db.collection('ProductCategory').add(productCategory.toJson());
+    } catch (e) {
+      throw Exception("Lỗi khi lưu ProductCategory: $e");
+    }
+  }
+
+
   Future<ProductModel?> getProductById(String productId) async {
     try {
       final doc = await _db.collection('Products').doc(productId).get();
@@ -67,11 +81,10 @@ class ProductRepository extends GetxController {
 
   Future<void> deleteProduct(String productId) async {
     try {
-      // Giả sử bạn có một phương thức trong Firestore để xóa sản phẩm
       await FirebaseFirestore.instance.collection('Products').doc(productId).delete();
     } catch (e) {
       // Xử lý lỗi nếu có
-      print('Error deleting product: $e');
+      print('Lỗi xóa sản phẩm: $e');
     }
   }
 

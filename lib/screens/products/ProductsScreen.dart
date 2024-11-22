@@ -4,7 +4,7 @@ import '../../constants.dart';
 import '../../controllers/product_controller.dart';
 import '../../routes/routes.dart';
 import '../dashboard/components/header.dart';
-import '../dashboard/components/recent_files.dart';
+import 'recent_files.dart';
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
@@ -44,7 +44,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 Expanded(
                   child: Column(
                     children: [
-
                       SizedBox(height: defaultPadding),
                       Obx(() => RecentFiles(
                         title: "Danh sách sản phẩm",

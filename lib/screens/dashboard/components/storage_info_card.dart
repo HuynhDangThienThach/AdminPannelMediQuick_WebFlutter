@@ -12,8 +12,8 @@ class StorageInfoCard extends StatelessWidget {
     required this.numOfFiles,
   }) : super(key: key);
 
-  final String title, svgSrc, amountOfFiles;
-  final int numOfFiles;
+  final String title, svgSrc;
+  final int numOfFiles, amountOfFiles;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class StorageInfoCard extends StatelessWidget {
               ),
             ),
           ),
-          Text(amountOfFiles)
+          Text("${amountOfFiles} đồng")
         ],
       ),
     );

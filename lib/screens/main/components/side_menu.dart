@@ -33,7 +33,7 @@ class SideMenu extends StatelessWidget {
             press: () => Get.toNamed(Routes.banners),
           ),
           DrawerListTile(
-            title: "Quản lý doanh mục",
+            title: "Quản lý danh mục",
             svgSrc: "assets/icons/menu_dashboard.svg",
             press: () => Get.toNamed(Routes.category),
           ),

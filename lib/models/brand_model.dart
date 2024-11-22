@@ -14,7 +14,17 @@ class BrandModel {
   static BrandModel empty() => BrandModel(id: '', image: '', name: '');
 
   /// Convert model to Json structure so that you can store data in Firebase
-  toJson() {
+  Map<String, dynamic> toJson() {
+    return {
+      'Id': id,
+      'Ảnh': image,
+      'Tên thương hiệu': name,
+      'Số lượng': productsCount,
+      'Kích hoạt': isFeatured,
+    };
+  }
+
+  Map<String, dynamic> toMap() {
     return {
       'Id': id,
       'Name': name,
@@ -23,6 +33,7 @@ class BrandModel {
       'IsFeatured': isFeatured,
     };
   }
+
   /// Map Json oriented document snapshot from API, Json to BrandModel
   factory BrandModel.fromJson(Map<String, dynamic> document) {
     final data = document;

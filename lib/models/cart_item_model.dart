@@ -1,7 +1,7 @@
 class CartItemModel {
   String productId;
   String title;
-  String? image;
+  String image;
   String variationId;
   String? brandName;
   double price;
@@ -13,7 +13,7 @@ class CartItemModel {
     required this.productId,
     required this.quantity,
     this.variationId = "",
-    this.image,
+    required this.image,
     this.price = 0.0,
     this.title = '',
     this.brandName,
@@ -21,7 +21,7 @@ class CartItemModel {
   });
 
   // Empty Cart
-  static CartItemModel empty() => CartItemModel(productId: '', quantity: 0);
+  static CartItemModel empty() => CartItemModel(productId: '', quantity: 0, image: '');
 
   // Convert a CartItem to a Json Map
   Map<String, dynamic> toJson() {

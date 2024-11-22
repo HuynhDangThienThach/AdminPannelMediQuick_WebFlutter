@@ -10,21 +10,19 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../controllers/menu_app_controller.dart';
 import '../screens/banners/BannersScreen.dart';
-import '../screens/banners/CreateBannersScreen.dart';
-import '../screens/banners/EditBannersScreen.dart';
+import '../screens/banners/crudBanner/CreateBannersScreen.dart';
+import '../screens/banners/crudBanner/EditBannersScreen.dart';
 import '../screens/brands/BrandsScreen.dart';
-import '../screens/brands/CreateBrandsScreen.dart';
-import '../screens/brands/EditBrandsScreen.dart';
-import '../screens/category/CreateCategoryScreen.dart';
-import '../screens/category/EditCategoryScreen.dart';
-import '../screens/customers/CreateCustomerScreen.dart';
-import '../screens/customers/CustomerDetailsScreen.dart';
+import '../screens/brands/crudBrand/CreateBrandsScreen.dart';
+import '../screens/brands/crudBrand/EditBrandsScreen.dart';
+import '../screens/category/crudCategory/CreateCategoryScreen.dart';
+import '../screens/category/crudCategory/EditCategoryScreen.dart';
 import '../screens/customers/CustomerScreen.dart';
-import '../screens/orders/CreateOrdersScreen.dart';
-import '../screens/orders/EditOrdersScreen.dart';
+import '../screens/customers/crudCustomer/CustomerDetailsScreen.dart';
+import '../screens/orders/crudOrder/OrdersDetailsScreen.dart';
 import '../screens/orders/OrdersScreen.dart';
-import '../screens/products/CreateProductsScreen.dart';
-import '../screens/products/EditProductsScreen.dart';
+import '../screens/products/crudProduct/CreateProductsScreen.dart';
+import '../screens/products/crudProduct/EditProductsScreen.dart';
 import '../screens/products/ProductsScreen.dart';
 
 class AppRoutes {
@@ -119,7 +117,7 @@ class AppRoutes {
     GetPage(
       name: Routes.editBrands,
       page: () => MainScreen(
-        screen: EditBrandsScreen(),
+        screen: EditBrandScreen(),
         scaffoldKey: GlobalKey<ScaffoldState>(),
       ),
       middlewares: [RouteMiddleware()],
@@ -133,15 +131,7 @@ class AppRoutes {
       middlewares: [RouteMiddleware()],
     ),
     GetPage(
-      name: Routes.createCustomer,
-      page: () => MainScreen(
-        screen: CreateCustomerScreen(),
-        scaffoldKey: GlobalKey<ScaffoldState>(),
-      ),
-      middlewares: [RouteMiddleware()],
-    ),
-    GetPage(
-      name: Routes.CustomerDetails,
+      name: Routes.customerDetails,
       page: () => MainScreen(
         screen: CustomerDetailsScreen(),
         scaffoldKey: GlobalKey<ScaffoldState>(),
@@ -157,17 +147,9 @@ class AppRoutes {
       middlewares: [RouteMiddleware()],
     ),
     GetPage(
-      name: Routes.createOrders,
+      name: Routes.detailsOrders,
       page: () => MainScreen(
-        screen: CreateOrdersScreen(),
-        scaffoldKey: GlobalKey<ScaffoldState>(),
-      ),
-      middlewares: [RouteMiddleware()],
-    ),
-    GetPage(
-      name: Routes.editOrders,
-      page: () => MainScreen(
-        screen: EditOrdersScreen(),
+        screen: OrdersDetailsScreen(),
         scaffoldKey: GlobalKey<ScaffoldState>(),
       ),
       middlewares: [RouteMiddleware()],

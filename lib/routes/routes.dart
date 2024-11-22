@@ -18,11 +18,10 @@ class Routes{
 
   static const customer  = '/customer';
   static const createCustomer = '/createCustomer';
-  static const CustomerDetails = '/CustomerDetails';
+  static const customerDetails = '/customerDetails';
 
   static const orders = '/orders';
-  static const createOrders = '/createOrders';
-  static const editOrders = '/editOrders';
+  static const detailsOrders = '/detailsOrders';
 
   static const category = '/category';
   static const createCategory = '/createCategory';

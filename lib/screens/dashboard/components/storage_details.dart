@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
+import '../../../controllers/customer_controller.dart';
 import 'chart.dart';
 import 'storage_info_card.dart';
+
+import 'package:get/get.dart'; // Để sử dụng GetX
 
 class StorageDetails extends StatelessWidget {
   const StorageDetails({
@@ -11,6 +14,8 @@ class StorageDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CustomerController());
+
     return Container(
       padding: EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
@@ -30,37 +35,51 @@ class StorageDetails extends StatelessWidget {
           SizedBox(height: defaultPadding),
           Chart(),
           StorageInfoCard(
-            svgSrc: "assets/icons/Documents.svg",
-            title: "Chuẩn bị hàng",
-            amountOfFiles: "999.999 đồng",
-            numOfFiles: 25,
+            svgSrc: "assets/icons/pending.svg",
+            title: "Đang chờ xử lý",
+            amountOfFiles:
+            controller.calculateOrderStatusPending().toInt(),
+            numOfFiles: controller.countOrderStatusPending(),
           ),
           StorageInfoCard(
-            svgSrc: "assets/icons/media.svg",
+            svgSrc: "assets/icons/processing.svg",
             title: "Đang xử lý",
-            amountOfFiles: "888.888 đồng",
-            numOfFiles: 20,
+            amountOfFiles:
+            controller.calculateOrderStatusProcessing().toInt(),
+            numOfFiles: controller.countOrderStatusProcessing(),
           ),
           StorageInfoCard(
-            svgSrc: "assets/icons/media_file.svg",
+            svgSrc: "assets/icons/prepare.svg",
+            title: "Đang chuẩn bị hàng",
+            amountOfFiles:
+            controller.calculateOrderStatusPrepare().toInt(),
+            numOfFiles: controller.countOrderStatusPrepare(),
+          ),
+          StorageInfoCard(
+            svgSrc: "assets/icons/shipped.svg",
             title: "Đang giao hàng",
-            amountOfFiles: "777.777 đồng",
-            numOfFiles: 40,
+            amountOfFiles:
+            controller.calculateOrderStatusShipped().toInt(),
+            numOfFiles: controller.countOrderStatusShipped(),
           ),
           StorageInfoCard(
-            svgSrc: "assets/icons/folder.svg",
+            svgSrc: "assets/icons/delivered.svg",
             title: "Đã giao hàng",
-            amountOfFiles: "666.666 đồng",
-            numOfFiles: 50,
+            amountOfFiles:
+            controller.calculateOrderStatusDelivered().toInt(),
+            numOfFiles: controller.countOrderStatusDelivered(),
           ),
           StorageInfoCard(
-            svgSrc: "assets/icons/unknown.svg",
+            svgSrc: "assets/icons/cancel.svg",
             title: "Hủy đơn hàng",
-            amountOfFiles: "555.555 đồng",
-            numOfFiles: 10,
+            amountOfFiles:
+            controller.calculateOrderStatusCancelled().toInt(),
+            numOfFiles: controller.countOrderStatusCancelled(),
           ),
         ],
       ),
     );
   }
 }
+
+
