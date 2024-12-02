@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../constants.dart';
 import '../../../models/order_model.dart';
 import '../../../responsive.dart';
@@ -214,18 +215,9 @@ class _OrderRecentFilesState extends State<OrderRecentFiles> {
 
 
         else if (col == 'Tổng tiền') {
-          String tongTienOrder= item[col]?.toString() ?? "";
-          String displayTongTienOrder = tongTienOrder.length > 40 ? '${tongTienOrder.substring(0, 40)}...' : tongTienOrder;
-          cells.add(DataCell(
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(
-                displayTongTienOrder,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
-            ),
-          ));
+          double total = item[col] != null ? double.tryParse(item[col]?.toString() ?? "") ?? 0 : 0;
+          String formattedPrice = '${NumberFormat('#,##0').format(total)}đ';
+          cells.add(DataCell(Text(formattedPrice)));
         }
       }
       cells.add(DataCell(Padding(

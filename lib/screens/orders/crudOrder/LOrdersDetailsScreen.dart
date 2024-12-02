@@ -68,19 +68,19 @@ class LOrdersDetailsScreen extends StatelessWidget {
                                   },
                                 ),
                                 title: Text(item.title),
-                                trailing: Text("${NumberFormat('#,##0').format(item.price)} x ${item.quantity}"),
+                                trailing: Text("${NumberFormat('#,##0').format(item.price)} x ${item.quantity} đ"),
                               ),
                               const Divider(),
-                              _buildRow1("Giá", "${NumberFormat('#,##0').format(subtotal)}"),
+                              _buildRow1("Giá", "${NumberFormat('#,##0').format(subtotal)} đ"),
                               _buildRow1("Giảm giá", "0.00 đ"),
                               _buildRow1("Phí vận chuyển", "10,000 đ"),
-                              _buildRow1("Thuế", "${NumberFormat('#,##0').format(tax)}"),
+                              _buildRow1("Thuế", "${NumberFormat('#,##0').format(tax)} đ"),
                               const Divider(),
                             ],
                           );
                         }).toList(),
                       ),
-                      _buildRow1("Tổng cộng", "${NumberFormat('#,##0').format(order!.totalAmount)}")
+                      _buildRow1("Tổng cộng", "${NumberFormat('#,##0').format(order!.totalAmount)} đ")
                     ],
                   ),
                 ),

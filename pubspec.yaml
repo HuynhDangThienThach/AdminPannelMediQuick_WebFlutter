@@ -28,6 +28,7 @@ dependencies:
   cached_network_image: ^3.3.0
   file_picker: ^8.0.1
   lottie: ^2.7.0
+  dropdown_search: ^5.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

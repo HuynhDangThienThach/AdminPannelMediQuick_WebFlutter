@@ -71,6 +71,12 @@ class FileInfoCardGridView extends StatelessWidget {
     final controller = Get.find<CustomerController>();
 
     return Obx(() {
+      if (controller.isLoading.value) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
       if (controller.demoMyFiles.isEmpty) {
         return Center(
           child: Text(
@@ -79,6 +85,7 @@ class FileInfoCardGridView extends StatelessWidget {
           ),
         );
       }
+
       return GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -93,6 +100,7 @@ class FileInfoCardGridView extends StatelessWidget {
             FileInfoCard(info: controller.demoMyFiles[index]),
       );
     });
+
   }
 }
 

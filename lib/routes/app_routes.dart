@@ -182,7 +182,7 @@ class AppRoutes {
     GetPage(
       name: Routes.profile,
       page: () => MainScreen(
-        screen: ProfileScreen(userId: '',),
+        screen: ProfileScreen(userId: '3Q5vjuHzVAaj9DpbpX6j73Fep5i2',),
         scaffoldKey: GlobalKey<ScaffoldState>(),
       ),
       middlewares: [RouteMiddleware()],
